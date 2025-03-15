@@ -6,20 +6,6 @@ from pympler import asizeof
 
 colorama.init()
 
-def show_cache(cache):
-    print()
-    print(f"{Color.GREEN}====== Кеш ======")
-
-    if not cache:
-        print("     Кеш порожній")
-    else:
-        for key, (_, count) in cache.items():
-            print(f"Кількість запитів = [{count}]: {key[0][0]}")
-
-    print("===================", Color.RESET)
-    print()
-
-
 def measure_memory(f):
     """Декоратор для вимірювання пам'яті"""
 
@@ -36,10 +22,6 @@ def measure_memory(f):
         if memory_used != 0:  # Виводити тільки, якщо змінилась пам'ять
             print(f"{Color.MAGENTA}Пам'ять після: {after_memory} байт{Color.RESET}")
             print(f"{Color.MAGENTA}Використано пам'яті: {memory_used} байт{Color.RESET}")
-
-        # Додатково виводимо вміст кешу, якщо потрібно
-        if memory_used > 0:
-            print(f"{Color.MAGENTA}\nВміст кешу: {wrapper._cache}\n{Color.RESET}")
 
         return result
 
@@ -65,14 +47,8 @@ def cache(max_limit=64):
                 if len(deco._cache) >= max_limit:  # Якщо кеш переповнений
                     least_used_key = min(deco._cache,
                                          key=lambda k: deco._cache[k][1])  # Знаходимо найменше використаний ключ
-                    print(
-                        f"{Color.RED}Видалення найменше використаного кешу: {least_used_key[0][0]} Кількість запитів = {deco._cache[least_used_key][1]}{Color.RESET}")
                     del deco._cache[least_used_key]  # Видаляємо його з кешу
                 deco._cache[cache_key] = (result, 1)  # Додаємо новий результат до кешу
-
-            # Виводимо поточний кеш
-            show_cache(deco._cache)
-
             return deco._cache[cache_key][0]
 
         deco._cache = {}  # Ініціалізація кешу всередині `cache`
