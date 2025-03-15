@@ -108,18 +108,11 @@ def calculate_average():
 
     df = pd.read_csv('hw.csv')
 
-    height_list = df["Height (Inches)"].tolist()
-    weight_list = df["Weight (Pounds)"].tolist()
+    height_list = df["Height (Inches)"].mean()
+    weight_list = df["Weight (Pounds)"].mean()
 
-    sum_height_list = 0
-    sum_weight_list = 0
-
-    for i in range(0, len(height_list)):
-        sum_height_list += height_list[i]
-        sum_weight_list += weight_list[i]
-
-    result_str += f"Average of Height (Pandas) = {round(sum_height_list / len(height_list), 2)}<br>"
-    result_str += f"Average of Weight (Pandas) = {round(sum_weight_list / len(weight_list), 2)}"
+    result_str += f"Average of Height (Pandas) = {round(height_list, 2)}<br>"
+    result_str += f"Average of Weight (Pandas) = {round(weight_list, 2)}"
 
     # PANDAS ------------------------------------------
 
