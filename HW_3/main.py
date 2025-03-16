@@ -30,8 +30,8 @@ def generate_students(count_of_students):
     current_year = time.localtime().tm_year
 
     for i in range(count_of_students):
-        # Берём строку день/месяц -> %d/%m и добавляем текущий год (current_year) - рандомное число от 18 до 60
-        birthday = f"{fake.date(pattern='%d/%m')}/{current_year - random.randint(18, 60)}"
+        # We change the line with the date of birth from the format "YY-MM-DD" to the format "DD.MM.YY"
+        birthday = ".".join(str(fake.date_of_birth(minimum_age=18, maximum_age=60)).split("-")[::-1])
 
         students["Students"].append({"Name": fake.name(),
                                      "Last_Name": fake.last_name(),
@@ -47,8 +47,8 @@ def generate_students(count_of_students):
 
 def show_it_beautifully(output_string: str, *, font_size_px=50, font_color="black"):
     """
-    Функция возвращает передаваемый текст (output_string) в виде HTML разметки, отображенный по центру экрана,
-    позволяется установить размер текста (font_size_px) и его цвет (font_color).
+    The function returns the transmitted text (output_string) as HTML markup,
+    displayed in the center of the screen, it is possible to set the text size (font_size_px) and its color (font_color).
     """
     return (
         f'<div id="pass" style="font-size: {font_size_px}px; font-weight: bold; height: 100%; font-family: monospace;'
@@ -72,34 +72,29 @@ def get_bitcoin_value(currency, convert):
     # * Example: $, €, ₴
     # * return symbol of input currency code
 
-    url = "https://bitpay.com/api/rates"
+    url = f"https://bitpay.com/api/rates/{currency}"
     result = httpx.get(url=url, params={})
-    result = result.json()
 
-    rate = 0
-
-    # Получаем стоимость валюты
-    for currency_item in result:
-        if currency_item["code"] == f"{currency}":
-            rate = currency_item["rate"]
-            break
-    else:
+    if result.status_code == 404:
         return show_it_beautifully("ERROR: This currency does not exist", font_color="RED")
+
+    result = result.json()
+    rate = result["rate"]
 
     answer = round(rate * convert, 2)
 
-    # Получаем список валют
+    # Get a dictionary with currencies
     url = "https://bitpay.com/currencies"
     result = httpx.get(url=url, params={})
     result = result.json()
 
-    # Извлекаем символ
+    # Extract the symbol
     symbol = ''
     for items in result["data"]:
         if items["code"] == f"{currency}":
             symbol = items["symbol"]
 
-    # Извлекаем символ биткоина
+    # Extracting the Bitcoin Symbol
     btc_symbol = result["data"][0]["symbol"]
 
     return show_it_beautifully(f"{convert}{btc_symbol} = {answer}{symbol}", font_color="GREEN")
