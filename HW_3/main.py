@@ -4,7 +4,6 @@ from flask import Flask, Response
 import json
 import pandas as pd
 from webargs.flaskparser import use_kwargs
-import time
 import httpx
 
 from count_of_students import count_of_students
