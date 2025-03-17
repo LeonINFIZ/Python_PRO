@@ -26,8 +26,6 @@ def generate_students(count_of_students):
     fake = Faker()
     students = {"Students": []}
 
-    current_year = time.localtime().tm_year
-
     for i in range(count_of_students):
         # We change the line with the date of birth from the format "YY-MM-DD" to the format "DD.MM.YY"
         birthday = ".".join(str(fake.date_of_birth(minimum_age=18, maximum_age=60)).split("-")[::-1])
