@@ -1,15 +1,3 @@
-"""
-1. Створити клас Circle(x,y,radius). Додати метод contains.
- Цей метод приймає екземпляр класу Point(x,y). Цей метод має повертати
- True or False. Якшо точка в колі то True якшо поза колом то False.
-
-2. Реалізувати метод square в фігурах які залишилися. (Triangle+Parallelogram).
-
-Triangle - треба створити клас
-
-3. Сцена, включить видос
-"""
-
 import math
 from math import floor
 
