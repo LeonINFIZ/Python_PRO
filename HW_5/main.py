@@ -68,6 +68,7 @@ def stats_by_city(genre, limit):
     return records
 
 
+
 if __name__ == '__main__':
     app.run(
         'localhost', debug=True
