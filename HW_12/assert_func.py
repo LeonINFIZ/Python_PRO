@@ -1,13 +1,14 @@
 def new_format(number_str):
-    result = ''
+    result = ""
     count = 0
-    for digit in reversed(number_str):
-        if count and count % 3 == 0:
-            result = '.' + result
-        result = digit + result
-        count += 1
-    return result
+    for num in number_str[::-1]:
+        if count %3 == 0 and count != 0:
+            result += "."
 
+        count += 1
+        result += num
+
+    return result[::-1]
 
 assert (new_format("1000000") == "1.000.000")
 assert (new_format("100") == "100")
